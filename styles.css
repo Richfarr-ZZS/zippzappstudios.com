@@ -56,7 +56,8 @@ a { color: var(--orange-hi); }
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-.brand-icon { width: 48px; height: 48px; flex: none; filter: drop-shadow(0 4px 10px rgba(255, 140, 0, 0.35)); }
+/* Icon and wordmark share one height so the tile and the text block line up top and bottom. */
+.brand-icon { height: 46px; width: auto; flex: none; filter: drop-shadow(0 4px 10px rgba(255, 140, 0, 0.35)); }
 .wordmark-img { height: 46px; width: auto; }
 .site-nav { display: flex; gap: 26px; font-size: 0.9rem; flex-wrap: wrap; }
 .site-nav a {
