@@ -146,6 +146,7 @@ a { color: var(--orange-hi); }
   background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #cfcfd6;
 }
 .card-icon svg { width: 28px; height: 28px; }
+.card-icon .grid-icon { width: 54px; height: 54px; }
 .card-soon h3 { color: var(--text); }
 
 .site-footer {
