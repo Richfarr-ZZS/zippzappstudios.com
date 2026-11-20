@@ -7,7 +7,7 @@
   <meta name="description" content="Zipp Zapp Studios Limited is an independent UK app studio. Home of TiempoTag, a personal weather and social app.">
   <meta name="theme-color" content="#0d0d0f">
   <link rel="canonical" href="https://zippzappstudios.com/">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-badge.png" type="image/png">
   <link rel="preload" href="assets/fonts/montserrat-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/montserrat-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
@@ -25,7 +25,7 @@
     "name": "Zipp Zapp Studios",
     "legalName": "Zipp Zapp Studios Limited",
     "url": "https://zippzappstudios.com/",
-    "logo": "https://zippzappstudios.com/assets/logo.svg",
+    "logo": "https://zippzappstudios.com/assets/logo-badge.png",
     "email": "mailto:hello@zippzappstudios.com",
     "identifier": "09338665",
     "address": {
@@ -44,12 +44,9 @@
 
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Zipp Zapp Studios Ltd home">
-      <img src="assets/logo.svg" alt="" width="44" height="44">
-      <span class="wordmark">
-        <span>ZIPP</span>
-        <span>ZAPP</span>
-        <span>STUDIOS <small>LTD</small></span>
-      </span>
+      <img class="brand-icon" src="assets/logo-badge.png" alt="" width="48" height="48">
+      <img class="wordmark-img" src="assets/wordmark.png" alt="Zipp Zapp Studios Ltd" width="160" height="55">
+
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="#top" class="is-active">Home</a>
@@ -101,12 +98,8 @@
                     <stop offset="1" stop-color="#fff" stop-opacity="0"/>
                   </linearGradient>
                 </defs>
-                <rect class="t-frame" x="8" y="8" width="184" height="184" rx="44" fill="url(#g-frame)"/>
-                <rect class="t-body" x="16" y="16" width="168" height="168" rx="38" fill="url(#g-orange)"/>
+                <image class="tile-img" href="assets/logo-badge.png" x="0" y="0" width="200" height="200"/>
                 <clipPath id="tile-clip"><rect x="16" y="16" width="168" height="168" rx="38"/></clipPath>
-                <rect x="16" y="16" width="168" height="84" rx="38" fill="url(#g-gloss)"/>
-                <path class="t-z" d="M52 48 L100 48 L148 48 L148 66 L70 134 L148 134 L148 143 L148 152 L52 152 L52 143 L52 134 L130 66 L52 66 Z"
-                      fill="url(#g-graphite)" stroke="#5a0f0a" stroke-width="2"/>
                 <!-- ZIP: a fast diagonal slash -->
                 <line class="zip-slash" x1="30" y1="30" x2="170" y2="170" stroke="#fff6dc" stroke-width="3" stroke-linecap="round"/>
                 <!-- ZAP: jagged bolt down the right side -->

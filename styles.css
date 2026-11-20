@@ -60,10 +60,8 @@ a { color: var(--orange-hi); }
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-.wordmark {
-  display: flex; flex-direction: column; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.32em; line-height: 1.25;
-}
-.wordmark small { font-size: 0.55rem; color: var(--orange); letter-spacing: 0.2em; }
+.brand-icon { width: 48px; height: 48px; flex: none; filter: drop-shadow(0 4px 10px rgba(255, 140, 0, 0.35)); }
+.wordmark-img { height: 46px; width: auto; }
 .site-nav { display: flex; gap: 26px; font-size: 0.9rem; flex-wrap: wrap; }
 .site-nav a {
   position: relative; color: var(--text); text-decoration: none; padding: 6px 0; opacity: 0.85; transition: opacity 0.2s;
@@ -183,8 +181,7 @@ a { color: var(--orange-hi); }
 
 /* Intro sequence, driven by main.js adding classes to .stage */
 .stage.is-drop .tile-wrap { opacity: 1; transform: none; }
-.t-z { opacity: 0; clip-path: inset(0 100% 0 0); transition: clip-path 0.5s ease-out, opacity 0.2s; }
-.stage.is-zip .t-z { opacity: 1; clip-path: inset(0 0 0 0); }
+.tile-img { transition: opacity 0.4s; }
 
 .zip-slash { stroke-dasharray: 200; stroke-dashoffset: 200; opacity: 0; filter: drop-shadow(0 0 6px #fff3c4); }
 .stage.is-zip .zip-slash { stroke-dashoffset: 0; opacity: 1; transition: stroke-dashoffset 0.35s ease-out, opacity 0.3s 0.35s; }
@@ -205,7 +202,7 @@ a { color: var(--orange-hi); }
 .sheen { animation: sheen 5.5s ease-in-out 2s infinite; }
 
 /* Idle: faint electric flicker along the struck edges, and a floor shimmer. */
-.stage.is-done .t-z { animation: edge-flicker 4.5s steps(1) infinite; }
+.stage.is-done .tile-img { animation: edge-flicker 4.5s steps(1) infinite; }
 .stage.is-done .floor::after { animation: shimmer 6s ease-in-out infinite; }
 
 /* Keyframes */
