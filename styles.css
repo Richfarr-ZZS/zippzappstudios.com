@@ -81,6 +81,19 @@ a { color: var(--orange-hi); }
 .hero-art {
   position: absolute; top: 0; right: 0; bottom: 0; left: 38%; z-index: -2;
   background: url("assets/hero-artwork.jpg") center / cover no-repeat;
+  overflow: hidden;
+}
+/* Glossy highlight that sweeps across the logo every few seconds. */
+.hero-sheen {
+  position: absolute; top: 0; bottom: 0; left: -40%; width: 30%;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.18) 45%, rgba(255, 245, 220, 0.4) 50%, rgba(255, 255, 255, 0.18) 55%, transparent 100%);
+  transform: skewX(-12deg);
+  mix-blend-mode: screen;
+  animation: hero-sheen 6.5s ease-in-out 1.5s infinite;
+}
+@keyframes hero-sheen {
+  0% { left: -40%; }
+  38%, 100% { left: 130%; }
 }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
@@ -179,7 +192,9 @@ a { color: var(--orange-hi); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
+    animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
   }
+  .hero-sheen { display: none; }
 }
