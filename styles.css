@@ -69,23 +69,32 @@ a { color: var(--orange-hi); }
   background: var(--orange); border-radius: 3px; box-shadow: 0 0 10px var(--orange);
 }
 
-/* Hero: the supplied branding artwork as a full-width backdrop, with the copy on the dark left side */
-.hero {
-  position: relative; isolation: isolate;
-  display: flex; align-items: center;
-  min-height: min(82vh, 760px);
-  padding: 56px 6vw;
-  overflow: hidden;
+/* Hero: the supplied branding artwork shown at its natural ratio, with the copy overlaid on the dark left side. */
+.hero { position: relative; isolation: isolate; overflow: hidden; }
+/* The image sets the size of the media box, so overlays placed by percentage land on exact pixels. */
+.hero-media { position: relative; width: 100%; }
+.hero-img { display: block; width: 100%; height: auto; }
+
+/* Animated glow ring sitting exactly over the app tile in the artwork. */
+.logo-glow {
+  position: absolute; left: 36.8%; top: 8.7%; width: 26.4%; aspect-ratio: 1 / 1.03;
+  border-radius: 19%; pointer-events: none;
+  animation: edge-glow 3.6s ease-in-out infinite, edge-flicker 5s steps(1) infinite;
 }
-/* Artwork fills the right side so the logo sits clear of the copy. */
-.hero-art {
-  position: absolute; top: 0; right: 0; bottom: 0; left: 38%; z-index: -2;
-  background: url("assets/hero-artwork.jpg") center / cover no-repeat;
-  overflow: hidden;
+@keyframes edge-glow {
+  0%, 100% { box-shadow: 0 0 12px 1px rgba(255, 150, 0, 0.25); }
+  50% { box-shadow: 0 0 30px 5px rgba(255, 185, 70, 0.7); }
 }
+@keyframes edge-flicker {
+  0%, 88%, 100% { filter: none; }
+  90% { filter: drop-shadow(0 0 6px #ffe3a8); }
+  92% { filter: none; }
+  95% { filter: drop-shadow(0 0 9px #ffc24d); }
+}
+
 /* Glossy highlight that sweeps across the logo every few seconds. */
 .hero-sheen {
-  position: absolute; top: 0; bottom: 0; left: -40%; width: 30%;
+  position: absolute; top: 0; bottom: 0; left: -40%; width: 22%; pointer-events: none;
   background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.18) 45%, rgba(255, 245, 220, 0.4) 50%, rgba(255, 255, 255, 0.18) 55%, transparent 100%);
   transform: skewX(-12deg);
   mix-blend-mode: screen;
@@ -95,11 +104,16 @@ a { color: var(--orange-hi); }
   0% { left: -40%; }
   38%, 100% { left: 130%; }
 }
+
+/* Scrim and copy overlaid on the left so the text stays readable over the artwork. */
 .hero::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(90deg, rgba(10, 10, 12, 0.92) 0%, rgba(10, 10, 12, 0.7) 36%, rgba(10, 10, 12, 0) 62%);
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(10, 10, 12, 0.92) 0%, rgba(10, 10, 12, 0.68) 30%, rgba(10, 10, 12, 0) 55%);
 }
-.hero-copy { max-width: 560px; }
+.hero-copy {
+  position: absolute; z-index: 2; left: 6vw; top: 50%; transform: translateY(-50%);
+  max-width: 460px;
+}
 .hero h1 {
   font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.1; margin: 0 0 22px; font-weight: 700; letter-spacing: -0.01em;
 }
@@ -172,16 +186,14 @@ a { color: var(--orange-hi); }
 
 /* Responsive */
 @media (max-width: 900px) {
-  /* Show only the logo part of the artwork at the top; the wordmark area sits below the copy. */
-  .hero { display: block; min-height: 0; padding: 0 6vw 56px; }
-  .hero-art {
-    top: 0; right: 0; bottom: auto; left: 0; height: 46vh;
-    background-size: auto 150%; background-position: center top;
-  }
+  /* Stack: artwork on top, copy beneath it. */
   .hero::before {
-    background: linear-gradient(180deg, transparent 0, transparent 40%, #0e0e10 47%);
+    background: linear-gradient(180deg, rgba(10, 10, 12, 0) 55%, rgba(10, 10, 12, 0.6) 80%, #0e0e10 100%);
   }
-  .hero-copy { margin-top: 46vh; padding-top: 12px; }
+  .hero-copy {
+    position: static; transform: none; max-width: none;
+    padding: 24px 6vw 48px; margin: 0;
+  }
   .cards { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
