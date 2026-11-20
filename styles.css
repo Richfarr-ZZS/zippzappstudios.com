@@ -20,9 +20,7 @@
   --muted: #a7a7b0;
   --orange: #ff9800;
   --orange-hi: #ffc04d;
-  --glass: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --s: min(520px, 90vw); /* stage size, used by the hero geometry */
 }
 
 * { box-sizing: border-box; }
@@ -33,9 +31,7 @@ body {
   margin: 0;
   font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(ellipse at 72% 28%, rgba(255, 150, 30, 0.12), transparent 45%),
-    radial-gradient(ellipse at 50% 0%, #2a2a2e 0%, #141416 45%, var(--bg) 100%);
+  background: radial-gradient(ellipse at 50% 0%, #2a2a2e 0%, #141416 45%, var(--bg) 100%);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.6;
@@ -72,13 +68,26 @@ a { color: var(--orange-hi); }
   background: var(--orange); border-radius: 3px; box-shadow: 0 0 10px var(--orange);
 }
 
-/* Hero */
+/* Hero: the supplied branding artwork as a full-width backdrop, with the copy on the dark left side */
 .hero {
-  display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 24px;
-  max-width: 1200px; margin: 0 auto; padding: 56px 6vw 72px; min-height: 84vh;
+  position: relative; isolation: isolate;
+  display: flex; align-items: center;
+  min-height: min(82vh, 760px);
+  padding: 56px 6vw;
+  overflow: hidden;
 }
+/* Artwork fills the right side so the logo sits clear of the copy. */
+.hero-art {
+  position: absolute; top: 0; right: 0; bottom: 0; left: 38%; z-index: -2;
+  background: url("assets/hero-artwork.jpg") center / cover no-repeat;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(10, 10, 12, 0.92) 0%, rgba(10, 10, 12, 0.7) 36%, rgba(10, 10, 12, 0) 62%);
+}
+.hero-copy { max-width: 560px; }
 .hero h1 {
-  font-size: clamp(2.1rem, 3.5vw, 3.3rem); line-height: 1.1; margin: 0 0 22px; font-weight: 700; letter-spacing: -0.01em;
+  font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.1; margin: 0 0 22px; font-weight: 700; letter-spacing: -0.01em;
 }
 .h1-line { display: block; white-space: nowrap; }
 .accent {
@@ -102,132 +111,6 @@ a { color: var(--orange-hi); }
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .btn-small { padding: 8px 16px; font-size: 0.85rem; white-space: nowrap; color: #141414; background: linear-gradient(180deg, #ffb53a, #ff8c00); }
-
-/* Stage: tile, floor and reflection */
-.stage {
-  position: relative; width: var(--s); height: calc(var(--s) * 1.1); justify-self: center;
-}
-.float {
-  position: absolute; left: calc(var(--s) * 0.14); top: calc(var(--s) * 0.04);
-  width: calc(var(--s) * 0.72); height: calc(var(--s) * 0.72);
-  animation: float 6s ease-in-out infinite;
-}
-.tilt {
-  width: 100%; height: 100%;
-  transform: translate3d(calc(var(--px, 0) * 12px), calc(var(--py, 0) * 10px), 0)
-             rotateX(calc(var(--py, 0) * -6deg)) rotateY(calc(var(--px, 0) * 8deg));
-  transition: transform 0.4s ease-out;
-}
-.tile-wrap {
-  width: 100%; height: 100%; position: relative;
-  opacity: 0; transform: translateY(-90px) scale(0.92);
-  transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 0.6s ease-out;
-  filter: drop-shadow(0 30px 40px rgba(255, 140, 0, 0.3));
-}
-.tile { width: 100%; height: 100%; overflow: visible; }
-
-.floor {
-  position: absolute; left: 0; right: 0; top: calc(var(--s) * 0.76); height: 0;
-}
-.floor::before {
-  content: ""; position: absolute; left: -10%; right: -10%; top: -1px; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 170, 60, 0.7), transparent);
-  box-shadow: 0 0 14px rgba(255, 150, 0, 0.6);
-  opacity: 0; transition: opacity 0.8s 0.6s;
-}
-.floor::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(var(--s) * 0.22);
-  background: radial-gradient(ellipse at 50% 0%, rgba(255, 160, 40, 0.25), transparent 65%);
-  opacity: 0; transition: opacity 0.8s 0.6s;
-}
-/* Same box as the tile, flipped about the floor line (its bottom edge). .floor sits at the tile's base, so the box is one tile-height above it. */
-.reflection-wrap {
-  position: absolute; left: calc(var(--s) * 0.14); top: calc(var(--s) * -0.72);
-  width: calc(var(--s) * 0.72); height: calc(var(--s) * 0.72);
-  /* Flip about the floor line, then lift by the glyph's bottom margin (48 of 200 units) so the reflection meets the base. */
-  transform: translateY(calc(var(--s) * -0.1728)) scaleY(-1);
-  transform-origin: 50% 100%;
-  -webkit-mask-image: linear-gradient(to top, #000 35%, transparent 75%);
-          mask-image: linear-gradient(to top, #000 35%, transparent 75%);
-  opacity: 0; transition: opacity 1s 0.4s;
-  filter: blur(1px) drop-shadow(0 0 12px rgba(255, 140, 0, 0.55));
-}
-.reflection { width: 100%; height: 100%; overflow: visible; }
-
-.screen-flash {
-  position: absolute; inset: -20%; pointer-events: none; opacity: 0;
-  background: radial-gradient(circle at 60% 40%, rgba(255, 224, 160, 0.4), transparent 60%);
-}
-
-/* Floating light trails */
-.trail {
-  position: absolute; border-radius: 50%; pointer-events: none;
-  border: 2px solid transparent; opacity: 0; transition: opacity 1s 0.8s;
-}
-.trail-a {
-  left: -4%; top: 18%; width: 118%; height: 52%;
-  border-top-color: #ffb347; border-right-color: rgba(255, 170, 60, 0.35);
-  filter: drop-shadow(0 0 8px #ff9800);
-  transform: rotate(-16deg);
-  animation: orbit 14s linear infinite;
-}
-.trail-b {
-  left: 10%; top: 30%; width: 90%; height: 40%;
-  border-bottom-color: rgba(255, 190, 90, 0.7);
-  filter: drop-shadow(0 0 6px #ff9800);
-  transform: rotate(14deg);
-  animation: orbit-rev 18s linear infinite;
-}
-
-/* Intro sequence, driven by main.js adding classes to .stage */
-.stage.is-drop .tile-wrap { opacity: 1; transform: none; }
-.tile-img { transition: opacity 0.4s; }
-
-.zip-slash { stroke-dasharray: 200; stroke-dashoffset: 200; opacity: 0; filter: drop-shadow(0 0 6px #fff3c4); }
-.stage.is-zip .zip-slash { stroke-dashoffset: 0; opacity: 1; transition: stroke-dashoffset 0.35s ease-out, opacity 0.3s 0.35s; }
-.stage.is-zap .zip-slash { opacity: 0; transition: opacity 0.3s; }
-
-.zap-bolt { stroke-dasharray: 180; stroke-dashoffset: 180; opacity: 0; filter: drop-shadow(0 0 6px #ffe6a0); }
-.stage.is-zap .zap-bolt { opacity: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 0.4s ease-out, opacity 0.3s; }
-.stage.is-done .zap-bolt { opacity: 0; transition: opacity 0.6s; }
-
-.stage.is-zap .screen-flash { animation: flash 0.5s ease-out; }
-.stage.is-zap .tile-wrap { animation: shake 0.4s ease-in-out; }
-
-.stage.is-done .reflection-wrap { opacity: 1; }
-.stage.is-done .floor::before,
-.stage.is-done .floor::after,
-.stage.is-done .trail { opacity: 1; }
-
-.sheen { animation: sheen 5.5s ease-in-out 2s infinite; }
-
-/* Idle: faint electric flicker along the struck edges, and a floor shimmer. */
-.stage.is-done .tile-img { animation: edge-flicker 4.5s steps(1) infinite; }
-.stage.is-done .floor::after { animation: shimmer 6s ease-in-out infinite; }
-
-/* Keyframes */
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes orbit { from { transform: rotate(-16deg); } to { transform: rotate(344deg); } }
-@keyframes orbit-rev { from { transform: rotate(14deg); } to { transform: rotate(-346deg); } }
-@keyframes flash { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes shake {
-  0%, 100% { translate: 0 0; }
-  20% { translate: -6px 3px; }
-  40% { translate: 5px -2px; }
-  60% { translate: -3px 2px; }
-  80% { translate: 2px 0; }
-}
-@keyframes edge-flicker {
-  0%, 90%, 100% { filter: none; }
-  92% { filter: drop-shadow(0 0 3px #ffd08a); }
-  94% { filter: none; }
-  96% { filter: drop-shadow(0 0 5px #ffb347); }
-}
-@keyframes shimmer { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-@keyframes sheen {
-  0% { transform: translateX(-70px) skewX(-12deg); }
-  60%, 100% { transform: translateX(240px) skewX(-12deg); }
-}
 
 /* Sections */
 .apps, .about, .support, .contact {
@@ -274,8 +157,16 @@ a { color: var(--orange-hi); }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; text-align: left; min-height: auto; padding-top: 32px; }
-  .stage { margin-top: 8px; }
+  /* Show only the logo part of the artwork at the top; the wordmark area sits below the copy. */
+  .hero { display: block; min-height: 0; padding: 0 6vw 56px; }
+  .hero-art {
+    top: 0; right: 0; bottom: auto; left: 0; height: 46vh;
+    background-size: auto 150%; background-position: center top;
+  }
+  .hero::before {
+    background: linear-gradient(180deg, transparent 0, transparent 40%, #0e0e10 47%);
+  }
+  .hero-copy { margin-top: 46vh; padding-top: 12px; }
   .cards { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
@@ -284,12 +175,9 @@ a { color: var(--orange-hi); }
   .site-nav { gap: 16px; font-size: 0.85rem; }
 }
 
-/* Reduced motion: show the finished state immediately */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
   }
-  .tilt { transform: none; }
 }
